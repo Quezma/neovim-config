@@ -12,8 +12,10 @@ syntax on
 set encoding=UTF-8
 
 call plug#begin('~/.vim/plugged')
+
 " vim color
-Plug 'jacoborus/tender.vim'
+Plug 'morhetz/gruvbox'
+
 "Nerd tree - file manager
 Plug 'preservim/nerdtree' 
 Plug 'Xuyuanp/nerdtree-git-plugin'
@@ -23,10 +25,6 @@ Plug 'tpope/vim-fugitive'
 
 " Editor settings
 Plug 'editorconfig/editorconfig-vim'
-
-" Tags
-Plug 'xolox/vim-misc'
-Plug 'xolox/vim-easytags'
 
 " Tagbar
 Plug 'majutsushi/tagbar'
@@ -71,6 +69,15 @@ Plug 'AdrianSchneider/vim-tdd'
 " Ale
 Plug 'dense-analysis/ale'
 
+" Javascript - TypeScript plugin syntax and highlighting
+Plug 'pangloss/vim-javascript'
+Plug 'leafgarland/typescript-vim'
+Plug 'peitalin/vim-jsx-typescript'
+Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
+
+" Graphql
+Plug 'jparise/vim-graphql'
+
 call plug#end()
 
 "" Neovim configuration
@@ -87,11 +94,15 @@ nnoremap <leader>l :set hlsearch!<CR>
 
 nnoremap <silent> <leader>sc :source $MYVIMRC<CR>
 
-" Copy and paste
+"" Copy/Paste/Cut
+if has('unnamedplus')
+  set clipboard=unnamed,unnamedplus
+endif
+
 noremap YY "+y<CR>
 noremap <leader>p "+gP<CR>
 noremap XX "+x<CR>
-nmap <leader>ex :Explore<CR>
+
 if has('macunix')
   " pbcopy for OSX copy/paste
   vmap <C-x> :!pbcopy<CR>
@@ -107,9 +118,16 @@ if (has("termguicolors"))
  set termguicolors
 endif
 syntax enable
-colorscheme tender
-let g:lightline = { 'colorscheme': 'tender' }
+colorscheme gruvbox
+let g:lightline = { 'colorscheme': 'gruvbox' }
 let macvim_skip_colorscheme=1
+nnoremap <silent> [oh :call gruvbox#hls_show()<CR>
+nnoremap <silent> ]oh :call gruvbox#hls_hide()<CR>
+nnoremap <silent> coh :call gruvbox#hls_toggle()<CR>
+
+nnoremap * :let @/ = ""<CR>:call gruvbox#hls_show()<CR>*
+nnoremap / :let @/ = ""<CR>:call gruvbox#hls_show()<CR>/
+nnoremap ? :let @/ = ""<CR>:call gruvbox#hls_show()<CR>?
 
 "" Nerd tree config
 
@@ -400,3 +418,25 @@ let g:ale_fix_on_save = 1
 let g:syntastic_javascript_eslint_args = ['--fix']
 set autoread
 au VimEnter *.js au BufWritePost *.js checktime
+
+let g:easytags_cmd = 'usr/bin/ctags'
+
+nnoremap <leader>af :CocCommand eslint.executeAutofix<CR>
+
+"" Javascript config
+
+autocmd BufEnter *.{js,jsx,ts,tsx} :syntax sync fromstart
+autocmd BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
+function! ShowDocIfNoDiagnostic(timer_id)
+  if (coc#util#has_float() == 0)
+    silent call CocActionAsync('doHover')
+  endif
+endfunction
+
+function! s:show_hover_doc()
+  call timer_start(500, 'ShowDocIfNoDiagnostic')
+endfunction
+
+autocmd CursorHoldI * :call <SID>show_hover_doc()
+autocmd CursorHold * :call <SID>show_hover_doc()
+nmap <leader>do <Plug>(coc-codeaction)
