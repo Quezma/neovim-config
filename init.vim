@@ -1,3 +1,15 @@
+set number
+set mouse=a
+set numberwidth=1
+set clipboard=unnamed
+syntax on
+set showcmd
+set ruler
+set cursorline
+set encoding=utf-8
+set showmatch
+set sw=2
+set relativenumber
 set ts=2
 set shiftwidth=2
 set ai sw=2
@@ -12,6 +24,9 @@ syntax on
 set encoding=UTF-8
 
 call plug#begin('~/.vim/plugged')
+
+" EJS syntax
+Plug 'nikvdp/ejs-syntax'
 
 " vim color
 Plug 'morhetz/gruvbox'
@@ -77,6 +92,11 @@ Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
 
 " Graphql
 Plug 'jparise/vim-graphql'
+
+" Flutter
+Plug 'dart-lang/dart-vim-plugin'
+Plug 'natebosch/vim-lsc'
+Plug 'natebosch/vim-lsc-dart'
 
 call plug#end()
 
@@ -158,15 +178,15 @@ map <Leader>n :NERDTreeFind<CR>
 let NERDTreeShowHidden=1
 
 let g:NERDTreeGitStatusIndicatorMapCustom = {
-                \ 'Modified'  :'✹',
-                \ 'Staged'    :'✚',
-                \ 'Untracked' :'✭',
-                \ 'Renamed'   :'➜',
-                \ 'Unmerged'  :'═',
-                \ 'Deleted'   :'✖',
-                \ 'Dirty'     :'✗',
-                \ 'Ignored'   :'☒',
-                \ 'Clean'     :'✔︎',
+                \ 'Modified'  :'?',
+                \ 'Staged'    :'?',
+                \ 'Untracked' :'?',
+                \ 'Renamed'   :'?',
+                \ 'Unmerged'  :'?',
+                \ 'Deleted'   :'?',
+                \ 'Dirty'     :'?',
+                \ 'Ignored'   :'?',
+                \ 'Clean'     :'??',
                 \ 'Unknown'   :'?',
                 \ }
 
@@ -409,8 +429,8 @@ nnoremap <silent><leader><leader> :FZF<CR>
 let g:airline#extensions#ale#enabled = 1
 let g:ale_linters = {'typescript': ['eslint'], 'javascript': ['eslint']}
 let g:ale_fixers = {'javascript': ['eslint'], 'typscript': ['eslint']}
-let g:ale_sign_error = '✘'
-let g:ale_sign_warning = '⚠'
+let g:ale_sign_error = '?'
+let g:ale_sign_warning = '?'
 highlight ALEErrorSign ctermbg=NONE ctermfg=red
 highlight ALEWarningSign ctermbg=NONE ctermfg=yellow
 " Fix files automatically on save
@@ -428,7 +448,7 @@ nnoremap <leader>af :CocCommand eslint.executeAutofix<CR>
 autocmd BufEnter *.{js,jsx,ts,tsx} :syntax sync fromstart
 autocmd BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
 function! ShowDocIfNoDiagnostic(timer_id)
-  if (coc#util#has_float() == 0)
+  if (coc#float#has_float() == 0)
     silent call CocActionAsync('doHover')
   endif
 endfunction
@@ -440,3 +460,8 @@ endfunction
 autocmd CursorHoldI * :call <SID>show_hover_doc()
 autocmd CursorHold * :call <SID>show_hover_doc()
 nmap <leader>do <Plug>(coc-codeaction)
+set hlsearch                    " highlight matches
+set incsearch                   " incremental searching
+set ignorecase                  " searches are case insensitive...
+set smartcase                   " ... unless they contain at least one capital letter
+let g:lsc_auto_map = v:true
