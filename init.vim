@@ -1,255 +1,115 @@
 set number
 set mouse=a
-set numberwidth=1
 set clipboard=unnamed
-syntax on
 set showcmd
 set ruler
 set cursorline
-set encoding=utf-8
 set showmatch
 set sw=2
 set relativenumber
 set ts=2
 set shiftwidth=2
 set ai sw=2
+set et
 let mapleader = ","
 set hlsearch
-set number
-set ruler
+set iskeyword+=-
 filetype on
 filetype plugin on
 filetype indent on
 syntax on
 set encoding=UTF-8
 
+""" Plugins
+
 call plug#begin('~/.vim/plugged')
 
-" EJS syntax
-Plug 'nikvdp/ejs-syntax'
-
-" vim color
 Plug 'morhetz/gruvbox'
-
-"Nerd tree - file manager
-Plug 'preservim/nerdtree' 
-Plug 'Xuyuanp/nerdtree-git-plugin'
-
-" Git pluggin
-Plug 'tpope/vim-fugitive'
-
-" Editor settings
-Plug 'editorconfig/editorconfig-vim'
-
-" Tagbar
-Plug 'majutsushi/tagbar'
-
-" Markdown support
-Plug 'godlygeek/tabular'
-Plug 'plasticboy/vim-markdown'
-
-" FZF
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
-
-" Buffer tabs
-Plug 'mengelbrecht/lightline-bufferline'
-
-" airline
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-
-" coc vim
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-
-" ale
-Plug 'w0rp/ale'
-
-" auto pairs
-Plug 'jiangmiao/auto-pairs'
-
-" typescript
-Plug 'leafgarland/typescript-vim'
-Plug 'peitalin/vim-jsx-typescript'
-
-" Buffer
-Plug 'bagrat/vim-buffet'
-
-" Icons
+Plug 'preservim/nerdtree'
+Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'ryanoasis/vim-devicons'
-
-" TDD
-Plug 'AdrianSchneider/vim-tdd'
-
-" Ale
-Plug 'dense-analysis/ale'
-
-" Javascript - TypeScript plugin syntax and highlighting
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'pangloss/vim-javascript'
 Plug 'leafgarland/typescript-vim'
-Plug 'peitalin/vim-jsx-typescript'
-Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
-
-" Graphql
+Plug 'maxmellon/vim-jsx-pretty'
 Plug 'jparise/vim-graphql'
-
-" Flutter
-Plug 'dart-lang/dart-vim-plugin'
+Plug 'jiangmiao/auto-pairs'
+Plug 'tpope/vim-fugitive'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'mg979/vim-visual-multi', {'branch': 'master'}
+Plug 'vimwiki/vimwiki'
+Plug 'alvan/vim-closetag'
 Plug 'natebosch/vim-lsc'
 Plug 'natebosch/vim-lsc-dart'
+Plug 'dart-lang/dart-vim-plugin'
 
 call plug#end()
 
-"" Neovim configuration
+""" End of Plugins
 
-" Buffers
-noremap <leader>z :bp<CR>
-noremap <leader>q :bp<CR>
-noremap <leader>x :bn<CR>
-noremap <leader>w :bn<CR>
-noremap <leader>c :bw<CR>
+""" General shortcuts and leaders
 
-" Clear search
-nnoremap <leader>l :set hlsearch!<CR>
+nnoremap <silent> <leader>pi :PlugInstall<CR>
+nnoremap <silent> <leader>pc :PlugClean<CR>
+nnoremap <silent> <leader>w :w<CR>
+nnoremap <silent> <leader>q :q<CR>
+nnoremap <silent> <leader>c :bw<CR>
+nnoremap <silent> <leader>so :so %<CR>
+nnoremap <silent> <leader>z :bprev<CR>
+nnoremap <silent> <leader>x :bnext<CR>
 
-nnoremap <silent> <leader>sc :source $MYVIMRC<CR>
+augroup css
+    autocmd!
+    autocmd FileType css,html,sass setlocal iskeyword+=-
+augroup END
 
-"" Copy/Paste/Cut
-if has('unnamedplus')
-  set clipboard=unnamed,unnamedplus
-endif
+""" End of General shortcuts and leaders
 
-noremap YY "+y<CR>
-noremap <leader>p "+gP<CR>
-noremap XX "+x<CR>
+""" Plugins Configurations
 
-if has('macunix')
-  " pbcopy for OSX copy/paste
-  vmap <C-x> :!pbcopy<CR>
-  vmap <C-c> :w !pbcopy<CR><CR>
-endif
+"""" Gruvbox configuration
 
-" Safe when press esc
-map <ESC> :w<CR>
-
-" Theme color config
-
-if (has("termguicolors"))
- set termguicolors
-endif
-syntax enable
 colorscheme gruvbox
 let g:lightline = { 'colorscheme': 'gruvbox' }
 let macvim_skip_colorscheme=1
-nnoremap <silent> [oh :call gruvbox#hls_show()<CR>
-nnoremap <silent> ]oh :call gruvbox#hls_hide()<CR>
-nnoremap <silent> coh :call gruvbox#hls_toggle()<CR>
 
-nnoremap * :let @/ = ""<CR>:call gruvbox#hls_show()<CR>*
-nnoremap / :let @/ = ""<CR>:call gruvbox#hls_show()<CR>/
-nnoremap ? :let @/ = ""<CR>:call gruvbox#hls_show()<CR>?
+"""" End of Gruvbox Configuration
 
-"" Nerd tree config
+"""" Airline Configuration
 
-" Start automatically when not file specified
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-
-" Relative path on status bar
-
-let NERDTreeStatusline="%{exists('b:NERDTree')?fnamemodify(b:NERDTree.root.path.str(), ':~'):''}"
-
-" Toggle NERDTree with Ctrl-N
-let g:NERDTreeChDirMode=2
-let g:NERDTreeIgnore=['\.rbc$', '\~$', '\.pyc$', '\.db$', '\.sqlite$', '__pycache__']
-let g:NERDTreeSortOrder=['^__\.py$', '\/$', '*', '\.swp$', '\.bak$', '\~$']
-let g:NERDTreeShowBookmarks=1
-let g:nerdtree_tabs_focus_on_files=1
-let g:NERDTreeMapOpenInTabSilent = '<RightMouse>'
-let g:NERDTreeWinSize = 50
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.db,*.sqlite
-nnoremap <silent> <F2> :NERDTreeFind<CR>
-nnoremap <silent> <F3> :NERDTreeToggle<CR>
-let NERDTreeShowHidden=1
-let NERDTreeQuitOnOpen=1
-map <Leader>n :NERDTreeFind<CR>
-
-" Show hidden files in NERDTree
-let NERDTreeShowHidden=1
-
-let g:NERDTreeGitStatusIndicatorMapCustom = {
-                \ 'Modified'  :'?',
-                \ 'Staged'    :'?',
-                \ 'Untracked' :'?',
-                \ 'Renamed'   :'?',
-                \ 'Unmerged'  :'?',
-                \ 'Deleted'   :'?',
-                \ 'Dirty'     :'?',
-                \ 'Ignored'   :'?',
-                \ 'Clean'     :'??',
-                \ 'Unknown'   :'?',
-                \ }
-
-"" Tagbar config
-set showtabline=2
-set guioptions-=e
-nmap <leader>' :TagbarToggle<CR>
-
-"" Markdown config
-let g:vim_markdown_folding_disabled = 1
-
-"" lightline
-let g:lightline = {
-      \ 'colorscheme': 'wombat',
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'readonly', 'filename', 'modified', 'helloworld' ] ]
-      \ },
-      \ 'component': {
-      \   'helloworld': 'Hello, world!'
-      \ },
-      \ }
-
-let g:lightline.tabline = {
-  \   'left': [ ['tabs'] ],
-  \   'right': [ ['close'] ]
-  \ }
-
-if !has('gui_running')
-  set t_Co=256
-endif
-
-""" Buffer config
-
-let g:buffet_powerline_separators = 1
-let g:buffer_separator = '|'
-let g:buffet_use_devicons = 1
-let g:buffet_tab_icon = "\uf00a"
-let g:buffet_left_trunc_icon = "\uf0a8"
-let g:buffet_right_trunc_icon = "\uf0a9"
-
-" Note: Make sure the function is defined before `vim-buffet` is loaded.
-function! g:BuffetSetCustomColors()
-  hi! BuffetCurrentBuffer cterm=NONE ctermbg=5 ctermfg=8 guibg=#5993f0 guifg=#000000
-endfunction
-
-"" Dev icons
-let g:WebDevIconsOS = 'Darwin'
-let g:webdevicons_enable = 1
-let g:webdevicons_enable_unite = 1
-let g:webdevicons_enable_vimfiler = 1
-let g:webdevicons_enable_airline_statusline = 1
-let g:webdevicons_enable_ctrlp = 1
-let g:webdevicons_enable_startify = 1
-let g:webdevicons_enable_flagship_statusline = 1
-let g:webdevicons_conceal_nerdtree_brackets = 1
-let g:WebDevIconsUnicodeGlyphDoubleWidth = 1
-let g:WebDevIconsUnicodeDecorateFileNodes = 1
-let g:webdevicons_enable_nerdtree = 1
-let g:webdevicons_enable_airline_tabline = 1
+let g:airline#extensions#tabline#formatter = 'default'
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_theme='deus'
 let g:airline_powerline_fonts = 1
 
-"" COC config
+"""" End of Airline Configuration
+
+"""" Nerdtree Configuration
+
+nnoremap <leader>n :NERDTreeFocus<CR>
+let NERDTreeShowHidden=1
+let NERDTreeQuitOnOpen=1
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists('s:std_in') | NERDTree | endif
+
+"""" End of Nerdtree Configuration
+
+"""" COC Configuration
+
+autocmd CursorHold * silent call CocActionAsync('highlight')
+nmap <leader>ac  <Plug>(coc-codeaction)
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+nnoremap <leader>TE :call CocAction('runCommand', 'jest.projectTest')<CR>
+nnoremap <leader>Te :call CocAction('runCommand', 'jest.fileTest', ['%'])<CR>
+nnoremap <leader>te :call CocAction('runCommand', 'jest.singleTest')<CR>
 
 " TextEdit might fail if hidden is not set.
 set hidden
@@ -367,11 +227,14 @@ xmap ac <Plug>(coc-classobj-a)
 omap ac <Plug>(coc-classobj-a)
 
 " Remap <C-f> and <C-b> for scroll float windows/popups.
-" Note coc#float#scroll works on neovim >= 0.4.3 or vim >= 8.2.0750
-nnoremap <nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
-nnoremap <nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
-inoremap <nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
-inoremap <nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
+if has('nvim-0.4.0') || has('patch-8.2.0750')
+  nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+  nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+  inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
+  inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
+  vnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+  vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+endif
 
 " Use CTRL-S for selections ranges.
 " Requires 'textDocument/selectionRange' support of language server.
@@ -410,58 +273,61 @@ nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list.
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 
+"""" End of Configuration
 
-" GoTo code navigation.
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
-nmap <leader>rn <Plug>(coc-rename)
+"""" FZF Configuration
 
-"" FZF config
+
+set wildmode=list:longest,list:full
+set wildignore+=*.o,*.obj,.git,*.rbc,*.pyc,__pycache__
+let $FZF_DEFAULT_COMMAND =  "find * -path '*/\.*' -prune -o -path 'node_modules/**' -prune -o -path 'target/**' -prune -o -path 'dist/**' -prune -o  -type f -print -o -type l -print 2> /dev/null"
 
 nnoremap <silent><leader><leader> :FZF<CR>
 
-"" ==========
-"" ALE configuration
-"" ==========
+"""" End of FZF	Configuration
 
-let g:airline#extensions#ale#enabled = 1
-let g:ale_linters = {'typescript': ['eslint'], 'javascript': ['eslint']}
-let g:ale_fixers = {'javascript': ['eslint'], 'typscript': ['eslint']}
-let g:ale_sign_error = '?'
-let g:ale_sign_warning = '?'
-highlight ALEErrorSign ctermbg=NONE ctermfg=red
-highlight ALEWarningSign ctermbg=NONE ctermfg=yellow
-" Fix files automatically on save
-let g:ale_fix_on_save = 1
-let g:syntastic_javascript_eslint_args = ['--fix']
-set autoread
-au VimEnter *.js au BufWritePost *.js checktime
+""" Auto close html tags Configuration
+" filenames like *.xml, *.html, *.xhtml, ...
+" These are the file extensions where this plugin is enabled.
+"
+let g:closetag_filenames = '*.html,*.xhtml,*.phtml'
 
-let g:easytags_cmd = 'usr/bin/ctags'
+" filenames like *.xml, *.xhtml, ...
+" This will make the list of non-closing tags self-closing in the specified files.
+"
+let g:closetag_xhtml_filenames = '*.xhtml,*.jsx'
 
-nnoremap <leader>af :CocCommand eslint.executeAutofix<CR>
+" filetypes like xml, html, xhtml, ...
+" These are the file types where this plugin is enabled.
+"
+let g:closetag_filetypes = 'html,xhtml,phtml'
 
-"" Javascript config
+" filetypes like xml, xhtml, ...
+" This will make the list of non-closing tags self-closing in the specified files.
+"
+let g:closetag_xhtml_filetypes = 'xhtml,jsx'
 
-autocmd BufEnter *.{js,jsx,ts,tsx} :syntax sync fromstart
-autocmd BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
-function! ShowDocIfNoDiagnostic(timer_id)
-  if (coc#float#has_float() == 0)
-    silent call CocActionAsync('doHover')
-  endif
-endfunction
+" integer value [0|1]
+" This will make the list of non-closing tags case-sensitive (e.g. `<Link>` will be closed while `<link>` won't.)
+"
+let g:closetag_emptyTags_caseSensitive = 1
 
-function! s:show_hover_doc()
-  call timer_start(500, 'ShowDocIfNoDiagnostic')
-endfunction
+" dict
+" Disables auto-close if not in a "valid" region (based on filetype)
+"
+let g:closetag_regions = {
+    \ 'typescript.tsx': 'jsxRegion,tsxRegion',
+    \ 'javascript.jsx': 'jsxRegion',
+    \ }
 
-autocmd CursorHoldI * :call <SID>show_hover_doc()
-autocmd CursorHold * :call <SID>show_hover_doc()
-nmap <leader>do <Plug>(coc-codeaction)
-set hlsearch                    " highlight matches
-set incsearch                   " incremental searching
-set ignorecase                  " searches are case insensitive...
-set smartcase                   " ... unless they contain at least one capital letter
-let g:lsc_auto_map = v:true
+" Shortcut for closing tags, default is '>'
+"
+let g:closetag_shortcut = '>'
+
+" Add > at current position without closing the current tag, default is ''
+"
+let g:closetag_close_shortcut = '<leader>>'
+
+""" End of auto-close html tags
+
+""" End of Plugin Configurations

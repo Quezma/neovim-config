@@ -1,13 +1,7 @@
 { 
-	"eslint.autoFixOnSave": true,
+	"eslint.autoFixOnSave": false,
 	"eslint.filetypes": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
-	"coc.preferences.formatOnSaveFiletypes": [
-		"javascript",
-		"javascriptreact",
-		"typescript",
-		"typescriptreact"
-	],
-	"tsserver.formatOnType": true,
-  "coc.preferences.formatOnType": true,
-  "coc.preferences.extensionUpdateCheck": "daily"
+	"tsserver.formatOnType": false,
+  "coc.preferences.formatOnType": false,
+  "coc.preferences.extensionUpdateCheck": "never"
 }
