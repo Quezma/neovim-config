@@ -45,6 +45,9 @@ Plug 'alvan/vim-closetag'
 Plug 'natebosch/vim-lsc'
 Plug 'natebosch/vim-lsc-dart'
 Plug 'dart-lang/dart-vim-plugin'
+Plug 'preservim/vimux'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'rking/ag.vim'
 
 call plug#end()
 
@@ -331,3 +334,16 @@ let g:closetag_close_shortcut = '<leader>>'
 """ End of auto-close html tags
 
 """ End of Plugin Configurations
+
+"""" Vimux Config
+
+map <Leader>vm :VimuxPromptCommand("")<CR>
+map <Leader>vc :VimuxCloseRunner<CR>
+
+"""" End of Vimux Config
+
+"""" Ag Config
+
+let g:ag_working_path_mode="r"
+
+"""" End of Ag Config
