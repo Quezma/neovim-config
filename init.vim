@@ -52,6 +52,7 @@ Plug 'preservim/vimux'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'rking/ag.vim'
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
+Plug 'jxnblk/vim-mdx-js'
 
 call plug#end()
 
