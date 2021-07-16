@@ -53,6 +53,8 @@ Plug 'ctrlpvim/ctrlp.vim'
 Plug 'rking/ag.vim'
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
 Plug 'jxnblk/vim-mdx-js'
+Plug 'elixir-lsp/coc-elixir', {'do': 'yarn install && yarn prepack'}
+Plug 'elixir-editors/vim-elixir'
 
 call plug#end()
 
@@ -107,7 +109,7 @@ autocmd VimEnter * if argc() == 0 && !exists('s:std_in') | NERDTree | endif
 
 """" COC Configuration
 
-let g:coc_global_extensions = ['coc-json', 'coc-git', 'coc-tsserver', 'coc-css', 'coc-snippets', 'coc-eslint', 'coc-tabnine']
+let g:coc_global_extensions = ['coc-json', 'coc-git', 'coc-tsserver', 'coc-css', 'coc-snippets', 'coc-eslint', 'coc-tabnine', 'coc-elixir']
 
 autocmd CursorHold * silent call CocActionAsync('highlight')
 nmap <leader>ac  <Plug>(coc-codeaction)
