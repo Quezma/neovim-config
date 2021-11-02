@@ -1,6 +1,5 @@
 set number
 set mouse=a
-set clipboard=unnamed
 set showcmd
 set ruler
 set cursorline
@@ -22,6 +21,8 @@ set encoding=UTF-8
 highlight SpecialKey ctermfg=DarkGray
 set listchars=tab:>-,trail:~
 set list
+set clipboard=unnamedplus
+
 
 """ Plugins
 
@@ -55,6 +56,7 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
 Plug 'jxnblk/vim-mdx-js'
 Plug 'elixir-lsp/coc-elixir', {'do': 'yarn install && yarn prepack'}
 Plug 'elixir-editors/vim-elixir'
+Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
 
 call plug#end()
 
@@ -80,10 +82,13 @@ augroup END
 
 """ Plugins Configurations
 
+" colorscheme onedark
+colorscheme tokyonight
+
 """" Gruvbox configuration
 
-colorscheme gruvbox
-let g:lightline = { 'colorscheme': 'gruvbox' }
+" colorscheme gruvbox
+" let g:lightline = { 'colorscheme': 'gruvbox' }
 let macvim_skip_colorscheme=1
 
 """" End of Gruvbox Configuration
@@ -491,3 +496,5 @@ let g:coc_snippet_next = '<tab>'
 
 
 """ End of COC snippets
+
+nnoremap <silent> <leader>/ :noh<CR>
