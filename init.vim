@@ -57,6 +57,9 @@ Plug 'jxnblk/vim-mdx-js'
 Plug 'elixir-lsp/coc-elixir', {'do': 'yarn install && yarn prepack'}
 Plug 'elixir-editors/vim-elixir'
 Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
+Plug 'ghifarit53/tokyonight-vim'
+Plug 'ayu-theme/ayu-vim'
+Plug 'haystackandroid/carbonized'
 
 call plug#end()
 
@@ -83,13 +86,23 @@ augroup END
 """ Plugins Configurations
 
 " colorscheme onedark
-colorscheme tokyonight
+" colorscheme tokyonight
 
 """" Gruvbox configuration
 
-" colorscheme gruvbox
-" let g:lightline = { 'colorscheme': 'gruvbox' }
-let macvim_skip_colorscheme=1
+"colorscheme gruvbox
+"let g:lightline = { 'colorscheme': 'gruvbox' }
+
+let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+set termguicolors
+
+"colorscheme tokyonight
+
+"let g:tokyonight_style = 'storm' " available: night, storm
+"let g:tokyonight_enable_italic = 1
+colorscheme carbonized-dark
+let g:lightline = {'colorscheme' : 'carbonized-dark'}
+"let macvim_skip_colorscheme=1
 
 """" End of Gruvbox Configuration
 
@@ -97,7 +110,7 @@ let macvim_skip_colorscheme=1
 
 let g:airline#extensions#tabline#formatter = 'default'
 let g:airline#extensions#tabline#enabled = 1
-let g:airline_theme='deus'
+let g:airline_theme='bubblegum'
 let g:airline_powerline_fonts = 1
 
 """" End of Airline Configuration
